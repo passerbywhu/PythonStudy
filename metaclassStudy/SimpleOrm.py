@@ -70,8 +70,15 @@ u = User(id=12345, name='Michal', email='test@orm.org', password='my-pwd')
 u.save()
 
 
+
 #在ModelMetaclass中，一共做了几件事情：
 #排除掉对Model类的修改；
 #在当前类（比如User）中查找定义的类的所有属性，如果找到一个Field属性，就把它保存到一个__mappings__的dict中，
 #同时从类属性中删除该Field属性，否则，容易造成运行时错误（实例的属性会遮盖类的同名属性）；
 #把表名保存到__table__中，这里简化为表名默认为类名。
+
+#Model从dict继承，所以具备所有dict的功能，同时又实现了特殊方法__getattr__()和__setattr__()，因此又可以像引用普通字段那样写：
+#>>> user['id']
+#123
+#>>> user.id
+#123
